@@ -1,0 +1,128 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnUnknownIntent
+  id: main
+  actions:
+    - kind: InvokeFlowAction
+      id: d5402944-441f-4eda-936f-504a7f04730a
+      input:
+        binding:
+          text: =System.Recognizer.TriggeringMessage.Text
+
+      output:
+        binding:
+          encodedresponse: init:Topic.encodedResponse
+
+      flowId: c1780bff-6c32-ec11-b6e5-000d3a5b4901
+
+    - kind: Question
+      id: 09a5ef4b-ecfa-4d6c-950e-8cf641feff7b
+      alwaysPrompt: false
+      variable: init:Topic.Var
+      prompt: "Sorry that I could not find an answer. If you asked multiple questions in a row please remember to ['start over' the conversation](https://mycompany.sharepoint.com/sites/EUCAN-Legal/SitePages/ChatBot.aspx#how-to-best-ask-questions) if you get a response like 'I do not understand' to something I can normally answer. You can also [try rephrasing your question](https://mycompany.sharepoint.com/sites/EUCAN-Legal/SitePages/ChatBot.aspx#how-to-best-ask-questions). Further options:"
+      entity:
+        kind: EmbeddedEntity
+        definition:
+          kind: ClosedListEntity
+          items:
+            - id: General Help Menu - All Options
+              displayName: General Help Menu - All Options
+
+            - id: Search EUCAN Legal Sharepoint for your keywords
+              displayName: Search EUCAN Legal Sharepoint for your keywords
+
+            - id: Support Contact List (Legal)
+              displayName: Support Contact List (Legal)
+
+            - id: Start over (rephrase your question)
+              displayName: Start over (rephrase your question)
+
+            - id: Give Feedback about the bot
+              displayName: Give Feedback about the bot
+
+            - id: Provide correct answer (how should the bot respond to this question next time)
+              displayName: Provide correct answer (how should the bot respond to this question next time)
+
+            - id: Chat with EUCAN Legal Ops (Teams)
+              displayName: Chat with EUCAN Legal Ops (Teams)
+
+    - kind: ConditionGroup
+      id: condition-0
+      conditions:
+        - id: condition-0-item-0
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'Support Contact List (Legal)'
+          actions:
+            - kind: BeginDialog
+              id: 48087f8a-c8d8-4b92-ac32-130a521f5dcf
+              dialog: crb09_eucanLegalChatbot2024.topic.SupportContactListonfailover
+
+        - id: condition-0-item-1
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'Search EUCAN Legal Sharepoint for your keywords'
+          actions:
+            - kind: SendActivity
+              id: 6f5fd312-3a57-4ee4-9f7b-a999c8130f12
+              activity: |-
+                **Sharepoint Search**
+                
+                To search our Intranet (Mycompany Sharepoint) for your keywords, you can click the link below:
+                
+                https://mycompany.sharepoint.com/sites/mycompany/\\\\\_layouts/15/search.aspx/?q={Topic.encodedResponse}
+                
+                Or, you can search only the EUCAN Legal site with this link:
+                
+                https://mycompany.sharepoint.com/sites/EUCAN-Legal/\\\\\_layouts/15/search.aspx/?q={Topic.encodedResponse}
+
+            - kind: BeginDialog
+              id: 53f2e527-59b3-4b61-9b25-a0a63e74c311
+              dialog: crb09_eucanLegalChatbot2024.topic.EndofConversation
+
+        - id: condition-0-item-2
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'Give Feedback about the bot'
+          actions:
+            - kind: SendActivity
+              id: b2d7507d-49e6-43a9-87f6-d7fa167ee735
+              activity: "[Chat Bot Feedback Form](https://mycompany.sharepoint.com/sites/EUCAN-Legal/SitePages/ChatBot.aspx#where-can-i-leave-feedback%2C-comments-or-ask-questions-about-the-bot)"
+
+            - kind: BeginDialog
+              id: e0b0abf7-42ad-4eb4-9952-0592de4348bf
+              dialog: crb09_eucanLegalChatbot2024.topic.EndofConversation
+
+        - id: condition-0-item-3
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'General Help Menu - All Options'
+          actions:
+            - kind: BeginDialog
+              id: 1dcdeb0f-802c-4991-a14f-551a28b626ef
+              dialog: crb09_eucanLegalChatbot2024.topic._0GeneralOptionsnewcontractsignaturesfilingetc
+
+        - id: condition-0-item-4
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'Start over (rephrase your question)'
+          actions:
+            - kind: BeginDialog
+              id: bb1b72fe-905c-4984-b59e-1b8bd4395743
+              dialog: crb09_eucanLegalChatbot2024.topic.Startover
+
+        - id: condition-0-item-5
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'Provide correct answer (how should the bot respond to this question next time)'
+          actions:
+            - kind: BeginDialog
+              id: 0fffb66d-0520-4d5b-a6f9-873805f84fbc
+              dialog: crb09_eucanLegalChatbot2024.topic.ChatBotfeedbackcorrectresponseanswernoTriggersendsstartover
+
+        - id: condition-0-item-6
+          condition: =Topic.Var = 'crb09_eucanLegalChatbot2024.topic.Fallback.main.09a5ef4b-ecfa-4d6c-950e-8cf641feff7b'.'Chat with EUCAN Legal Ops (Teams)'
+          actions:
+            - kind: SendActivity
+              id: 86e0e9a1-d5b9-4761-8d8a-ac5c15509f5e
+              activity: |-
+                Click the link below to chat with EUCAN Legal Ops on Teams:
+                
+                https://teams.microsoft.com/l/chat/0/0?users=susanne.joest@company.com&topicName=OpenQuestionFromEucanLegalChatBot&message="{Topic.encodedResponse}"
+
+            - kind: BeginDialog
+              id: b3102309-1d3e-443a-83c2-24e4353ddb9f
+              dialog: crb09_eucanLegalChatbot2024.topic.EndofConversation
+
+      elseActions:
+        - kind: BeginDialog
+          id: 1uwoW2
+          dialog: crb09_eucanLegalChatbot2024.topic.Startover
