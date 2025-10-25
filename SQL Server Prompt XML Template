@@ -18,6 +18,7 @@
       <Requirement>Compatible with Power BI relationships</Requirement>
     </Requirements>
   </Context>
+  <Explain>0</Explain> <!-- 0 = suppress explanation, 1 with explanation -->
   <Issue>
     <!-- Describe any error or unexpected behavior -->
     CHECKSUM produces inconsistent results across environments; HASHBYTES returns hex which cannot be directly cast to BIGINT
