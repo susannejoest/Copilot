@@ -1,0 +1,36 @@
+<SQLServerScriptRequest>
+  <Task>
+    <!-- Describe the goal of the script -->
+    Create a numeric key for hierarchy table based on NODE_Name and Hier_No
+  </Task>
+  <Context>
+    <SQLVersion>SQL Server 2016</SQLVersion>
+    <Environment>On-Prem</Environment>
+    <Tables>
+      <Table name="Hierarchy">
+        <Column name="NODE_Name" type="VARCHAR" description="Alphanumeric node name"/>
+        <Column name="Hier_No" type="INT" description="Hierarchy number (e.g., 14 or 71)"/>
+      </Table>
+    </Tables>
+    <Requirements>
+      <Requirement>Key must start with Hier_No</Requirement>
+      <Requirement>Key must be numeric and stable</Requirement>
+      <Requirement>Compatible with Power BI relationships</Requirement>
+    </Requirements>
+  </Context>
+  <Issue>
+    <!-- Describe any error or unexpected behavior -->
+    CHECKSUM produces inconsistent results across environments; HASHBYTES returns hex which cannot be directly cast to BIGINT
+  </Issue>
+  <Example>
+    <Input>
+      <Hier_No>71</Hier_No>
+      <NODE_Name>ADM</NODE_Name>
+    </Input>
+    <ExpectedOutput>71000000012345</ExpectedOutput>
+  </Example>
+  <Notes>
+    <Note>Function fn_KeepAlphaNumeric is used to clean NODE_Name</Note>
+    <Note>Power BI model uses this key for dimension relationships</Note>
+  </Notes>
+</SQLServerScriptRequest>
