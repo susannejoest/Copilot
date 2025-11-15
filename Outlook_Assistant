@@ -1,4 +1,7 @@
 -- requires copilot 365 license
 
-qsummarize my email from the past week 
-prioritize on a scale from 0-5 with 0 being very important and 5 being not important
+based on my email, teams messages and files that I have not yet responded to or that have not otherwise been resolved, add them to my to do list, so that I can see what I need to focus on this week.
+summarize my emails and team messages for each to do item.
+prioritize the list on a scale from 0-5 with 0 being very important and 5 being not important, and include due dates if any
+if the priority is 3 or greater, draft an email response
+(schedule prompt to repeat daily at 7:30am, excluding Fri, Sat and Sun)
